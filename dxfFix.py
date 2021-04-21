@@ -40,10 +40,11 @@ for f in figs:
 plt.axis('equal')
 plt.show()
 plt.clf()
+
 print("Load nested dxf")
 filename = "nest.dxf"
 sourceDxf = ezdxf.readfile(filename)
-check_dxf_info(sourceDxf)
+#check_dxf_info(sourceDxf)
 new_dxf = fix_polylines(sourceDxf)
 check_dxf_info(new_dxf)
 nmsp = new_dxf.modelspace()

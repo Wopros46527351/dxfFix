@@ -230,7 +230,7 @@ def check_dxf_info(dxf):
     doc = dxf
     print("Layers info")
     for layer in doc.layers:
-        print(layer)
+        print(layer.dxf.name)
     msp = doc.modelspace()
     flag = False
     print("Figure info")
@@ -238,13 +238,13 @@ def check_dxf_info(dxf):
         print(fig)
         if fig.dxftype() == "POLYLINE":
             flag = True
-            print("This is 2d polyline:",fig.is_2d_polyline)
+            print("This is 2d polyline:",fig.is_2d_polyline,fig.dxf.layer)
     return flag
 
 #redraws all polylines to LWPolyline
 def fix_polylines(dxf):
     def RedrawPolylineToLWP(polyline):
-        return [i.format() for i in polyline]
+        return [i for i in polyline]
         
     result = ezdxf.new('R2010')
     msp = dxf.modelspace()
@@ -325,3 +325,9 @@ def test_line():
     msp.add_lwpolyline(points)
     msp.add_lwpolyline(reverse_points)
     return result
+
+def draw_box(msp,sizeX,sizeY):
+    maxx,minx,maxy,miny = get_max_min(msp)
+    print(miny)
+    points = [(0,-miny-10),(sizeX,-miny-10),(sizeX,-sizeY-miny-10),(0,-sizeY-miny-10),(0,-miny-10)]
+    msp.add_lwpolyline(points)

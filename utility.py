@@ -1,4 +1,5 @@
 from math import hypot
+
 #gets distance between two points
 def get_distance(point1,point2):
     return hypot(point1[0] - point2[0], point1[1] - point2[1])

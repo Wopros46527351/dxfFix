@@ -6,6 +6,10 @@ from graph import Graph
 from LWPUtils import *
 from figure import figure
 import matplotlib.pyplot as plt
+from tkinter import *
+from tkinter import filedialog
+filenames = []
+savep = None
 '''
 filename = "111.dxf"
 sourceDxf = ezdxf.readfile(filename)
@@ -17,6 +21,24 @@ for f in figs:
     f.drawCenter()
 plt.axis('equal')
 plt.show()'''
+def opening(event):
+    global filenames
+    filenames = filedialog.askopenfiles(parent = root)
+    print(filenames)
+
+
+def next_file(event):
+    global filenames
+    if filenames:
+        prepare_for_deepnest(filenames[0], 2000, 1000)
+        source_dxf = fix("nest.dxf")
+        source_dxf.saveas("fixed.dxf")
+        redraw_draw("fixed.dxf")
+
+
+def choose_fp(event):
+    global savep
+    
 def prepare_for_deepnest(filename,sizeX,sizeY,save_filename = "result.dxf"):
     print("Step 1: prepare for deepnest")
     source_dxf = ezdxf.readfile(filename)
@@ -42,7 +64,6 @@ def show_file(filename):
 
 def fix(filename):
     print("Load nested dxf")
-    filename = "nest.dxf"
     sourceDxf = ezdxf.readfile(filename)
     #check_dxf_info(sourceDxf)
     new_dxf = fix_polylines(sourceDxf)
@@ -76,13 +97,38 @@ def redraw_draw(filename):
 
 print("Redraw box way")
 
+root = Tk()
+root.geometry("400x400")
+root.title("Топ программа для dxf, бля буду")
 
-if __name__ == "__main__":
-    filename = "111.dxf"
-    prepare_for_deepnest(filename,2000,1000)
-    source_dxf = fix("nest.dxf")
-    source_dxf.saveas("fixed.dxf")
-    redraw_draw("fixed.dxf")
+t = Label(root, text = "Тут должен быть норм интерфейс, но он будет в патчах)")
+t.grid(column=0, row = 2, columnspan = 2, padx = 5, pady = 5)
+
+open_btn = Button(root, text = "Открыть файл", width = 27)
+open_btn.bind("<Button-1>", opening)
+open_btn.grid(column=0, row=0,padx = 5, pady= 5)
+
+next_file_btn = Button(root, text = "Обработать следующий файл")
+#next_file_btn.bind(biba)
+next_file_btn.grid(column=1, row=0, padx = 5, pady= 5)
+
+
+all_files_btn = Button(root, text = 'Обработать все файлы', width = 24)
+#all_files_btn.bind(boba)
+all_files_btn.grid(column=1, row=1, padx = 5, pady = 5)
+
+
+print(filenames)
+choose_fp_btn = Button(root, text = 'Выбрать папку для сохранения', width=27)
+#choose_fp_btn.bind(choose_fp)
+choose_fp_btn.grid(column=0, row = 1, padx = 5, pady = 5)
+#filename = "111.dxf"
+#prepare_for_deepnest(filename,2000,1000)
+#source_dxf = fix("nest.dxf")
+#source_dxf.saveas("fixed.dxf")
+#redraw_draw("fixed.dxf")
+root.mainloop()
+
 
 
 '''if __name__=="__main__":

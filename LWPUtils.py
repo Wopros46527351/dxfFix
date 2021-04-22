@@ -244,7 +244,7 @@ def check_dxf_info(dxf):
 #redraws all polylines to LWPolyline
 def fix_polylines(dxf):
     def RedrawPolylineToLWP(polyline):
-        return [i for i in polyline]
+        return [i.format(format = "xyseb") for i in polyline]
         
     result = ezdxf.new('R2010')
     msp = dxf.modelspace()

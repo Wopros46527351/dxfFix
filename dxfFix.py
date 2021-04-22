@@ -55,9 +55,23 @@ for f in figs:
     f.drawCenter()
 plt.axis('equal')
 plt.show()
+plt.clf()
 
+print("Connecting figures tree way")
+result = redraw_figure_way(new_dxf)
+result.saveas("tree.dxf")
+check_dxf_info(result)
+msp = result.modelspace()
+figs = [figure(i) for i in msp]
+print(f"total {len(figs)} figs")
+for f in figs:
+    f.drawFigurePlt()
+    f.drawCenter()
+plt.axis('equal')
+plt.show()
+plt.clf()
 
-
+print("Redraw box way")
 
 
 

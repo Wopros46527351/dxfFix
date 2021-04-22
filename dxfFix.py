@@ -17,65 +17,72 @@ for f in figs:
     f.drawCenter()
 plt.axis('equal')
 plt.show()'''
+def prepare_for_deepnest(filename,sizeX,sizeY,save_filename = "result.dxf"):
+    print("Step 1: prepare for deepnest")
+    source_dxf = ezdxf.readfile(filename)
+    check_dxf_info(source_dxf)
+    msp = source_dxf.modelspace()
+    draw_box(msp,sizeX,sizeY)
+    source_dxf.saveas(save_filename)
+    print("Done!")
+    return source_dxf
 
-print("Step 1: prepare for deepnest")
-filename = "111.dxf"
-sizeX = 2000
-sizeY = 1000
-source_dxf = ezdxf.readfile(filename)
-msp = source_dxf.modelspace()
-draw_box(msp,sizeX,sizeY)
-source_dxf.saveas("result.dxf")
-print("Done!")
+def show_file(filename):
+    filename = "result.dxf"
+    sourceDxf = ezdxf.readfile(filename)
+    #check_dxf_info(sourceDxf)
+    msp = sourceDxf.modelspace()
+    figs = [figure(i) for i in msp]
+    for f in figs:
+        f.drawFigurePlt()
+        f.drawCenter()
+    plt.axis('equal')
+    plt.show()
+    plt.clf()
 
+def fix(filename):
+    print("Load nested dxf")
+    filename = "nest.dxf"
+    sourceDxf = ezdxf.readfile(filename)
+    #check_dxf_info(sourceDxf)
+    new_dxf = fix_polylines(sourceDxf)
+    check_dxf_info(new_dxf)
+    nmsp = new_dxf.modelspace()
+    figs = [figure(i) for i in nmsp]
+    print(f"total {len(figs)} figs")
+    for f in figs:
+        f.drawFigurePlt()
+        f.drawCenter()
+    plt.axis('equal')
+    plt.show()
+    plt.clf()
+    return new_dxf
 
-filename = "result.dxf"
-sourceDxf = ezdxf.readfile(filename)
-#check_dxf_info(sourceDxf)
-msp = sourceDxf.modelspace()
-figs = [figure(i) for i in msp]
-for f in figs:
-    f.drawFigurePlt()
-    f.drawCenter()
-plt.axis('equal')
-plt.show()
-plt.clf()
-
-print("Load nested dxf")
-filename = "nest.dxf"
-sourceDxf = ezdxf.readfile(filename)
-#check_dxf_info(sourceDxf)
-new_dxf = fix_polylines(sourceDxf)
-check_dxf_info(new_dxf)
-nmsp = new_dxf.modelspace()
-figs = [figure(i) for i in nmsp]
-print(f"total {len(figs)} figs")
-for f in figs:
-    f.drawFigurePlt()
-    f.drawCenter()
-plt.axis('equal')
-plt.show()
-plt.clf()
-
-print("Connecting figures tree way")
-result = redraw_figure_way(new_dxf)
-result.saveas("tree.dxf")
-check_dxf_info(result)
-msp = result.modelspace()
-figs = [figure(i) for i in msp]
-print(f"total {len(figs)} figs")
-for f in figs:
-    f.drawFigurePlt()
-    f.drawCenter()
-plt.axis('equal')
-plt.show()
-plt.clf()
+def redraw_draw(filename):
+    print("Connecting figures tree way")
+    sourceDxf = ezdxf.read(filename)
+    result = redraw_figure_way(sourceDxf)
+    result.saveas("tree.dxf")
+    check_dxf_info(result)
+    msp = result.modelspace()
+    figs = [figure(i) for i in msp]
+    print(f"total {len(figs)} figs")
+    for f in figs:
+        f.drawFigurePlt()
+        f.drawCenter()
+    plt.axis('equal')
+    plt.show()
+    plt.clf()
 
 print("Redraw box way")
 
 
-
-
+if __name__ == "__main__":
+    filename = "111.dxf"
+    prepare_for_deepnest(filename,2000,1000)
+    source_dxf = fix("nest.dxf")
+    source_dxf.saveas("fixed.dxf")
+    redraw_draw("fixed.dxf")
 
 
 '''if __name__=="__main__":

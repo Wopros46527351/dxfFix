@@ -29,9 +29,13 @@ class figure(object):
                 plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'bo-', markersize=2)
 
     def calculateMid(self):
-        l = len(self.LWP)
-        midX = sum([p[0] for p in self.LWP])/l
-        midY = sum([p[1] for p in self.LWP])/l
+        l = len(self.LWP)-1
+        ''
+        summX=[p[0] for p in self.LWP]
+        summY=[p[1] for p in self.LWP]
+        ''
+        midX = sum(summX[1:])/l
+        midY = sum(summY[1:])/l
         return (midX,midY)
 
     def drawCenter(self):

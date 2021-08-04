@@ -2,6 +2,7 @@ import time
 from collections import defaultdict 
 from utility import get_distance,intersect
 from graph import Graph
+
 import ezdxf
 
 #TODO0 Find closest line,way better!

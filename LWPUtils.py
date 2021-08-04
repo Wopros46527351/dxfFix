@@ -8,6 +8,15 @@ import ezdxf
 #TODO0 Find closest line,way better!
 #Return indexes of bridge points
 def bridge_points(LWP1,LWP2):
+    """Находит индексы ближайщи точек в двух полилиниях
+
+    Args:
+        LWP1 (lwp): линия1
+        LWP2 (lwp): линия2
+
+    Returns:
+        tuple: (индекс точки в первой линии,индекс точки во второй линии)
+    """
     links = []
     for i1,v1 in enumerate(LWP1):
         for i2,v2 in enumerate(LWP2):
@@ -47,6 +56,15 @@ def bridge_points(LWP1,LWP2):
 
 #finds closest point to list edge
 def find_entry_point(start_point,layer):
+    """находит точку, ближайшую к стартовой
+
+    Args:
+        start_point (tuple): стартовая точка(x,y)
+        layer (msp): слой со всеми фигурами
+
+    Returns:
+        tuple: индекс фигуры, индекс точки фигуры
+    """
     mini = get_distance(start_point,layer[0][0])
     LWPindex = 0
     Pindex = 0
@@ -62,6 +80,14 @@ def find_entry_point(start_point,layer):
 
 #makes connections between all figs on layer[index1,index2,weight]
 def make_connections(layer):
+    """создаёт связи между всеми фигурами
+
+    Args:
+        layer (msp): слой
+
+    Returns:
+        array list: все связи
+    """
     connections = list()
     for i1 in range(len(layer)):
         for i2 in range(i1+1,len(layer)):
@@ -112,6 +138,16 @@ def solveTree(tree,start_point):
 
 #draws on fig LWP from point1 to point2
 def draw_on_fig(LWP,start_point,end_point):
+    """возвращает кривую по заданой полилинии начиная с начальной до конечной точки
+
+    Args:
+        LWP (lwp): полилиния
+        start_point (int): индекс начальной точки
+        end_point (int): индекс конечной точки
+
+    Returns:
+        list: кривая
+    """
     #refine to draw lengh optimal lines
     if start_point>end_point:
         
@@ -124,6 +160,15 @@ def draw_on_fig(LWP,start_point,end_point):
 
 #draws fig from start point
 def draw_fig(LWP,start_point):
+    """рисует фигуру начиная с данной точки
+
+    Args:
+        LWP (lwp): полилиния
+        start_point (int): индекс стартовой точки
+
+    Returns:
+        list: точки для отрисовки
+    """
     points = []
     for point in LWP[start_point::]:
         points.append(point)
@@ -228,6 +273,14 @@ def redraw_figure_way(dxf):
 #print full dxf info
 #TODOwell every thing
 def check_dxf_info(dxf):
+    """проверяет всю информацию по dxf
+
+    Args:
+        dxf (dxf): dxf документ
+
+    Returns:
+        bool: True если пригоден для использования
+    """
     doc = dxf
     print("Layers info")
     for layer in doc.layers:
@@ -244,6 +297,14 @@ def check_dxf_info(dxf):
 
 #redraws all polylines to LWPolyline
 def fix_polylines(dxf):
+    """преобразовывает все полилинии в lwp
+
+    Args:
+        dxf (dxf): dxf
+
+    Return:
+        dxf: исправленный dxf документ  
+    """
     def RedrawPolylineToLWP(polyline):
         return [i.format(format = "xyseb") for i in polyline]
         

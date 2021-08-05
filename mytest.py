@@ -101,8 +101,20 @@ def make_connections(layer):
     connections  = sorted(connections,key = lambda connections:connections[2])
     return connections
 
+<<<<<<< HEAD
 def find_entry_point(start_point,layer):
     """находит точку, ближайшую к стартовой
+=======
+def rate(lwp):
+    minx = None
+    for dot in lwp:
+        if minx:
+            if dot[0] <  minx:
+                minx = dot[0]
+        else:
+            minx = dot[0]
+    return minx
+>>>>>>> f9926e9582b63b119b15da95844744e31a6c9bae
 
     Args:
         start_point (tuple): стартовая точка(x,y)
@@ -144,7 +156,15 @@ for f in figs:
     f.drawCenter()
 
 
+<<<<<<< HEAD
 p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)
+=======
+lwps = [i.LWP for i in figs]
+shift = find_shift(lwps)
+print(lwps)
+lwps.sort(key=rate)
+print(lwps)
+>>>>>>> f9926e9582b63b119b15da95844744e31a6c9bae
 
 
 dot1 = figs[0].LWP[p1]

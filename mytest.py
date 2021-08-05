@@ -101,29 +101,32 @@ def make_connections(layer):
     connections  = sorted(connections,key = lambda connections:connections[2])
     return connections
 
-def find_entry_point(start_point,layer):
-    """находит точку, ближайшую к стартовой
+def find_entry_point(lwps):
+    for lwp in lwps:
+        for dot in lwp:
+            print(dot)
 
-    Args:
-        start_point (tuple): стартовая точка(x,y)
-        layer (msp): слой со всеми фигурами
 
+def find_shift(lwps):
+    '''Находит сдвиг для переноса всех объектов в первую четверть
+    
+    Args: 
+        array lwps: список всех LWP
     Returns:
-        tuple: индекс фигуры, индекс точки фигуры
-    """
-    mini = get_distance(start_point,layer[0][0])
-    LWPindex = 0
-    Pindex = 0
-    for i in range(len(layer)):
-        LWP = layer[i]
-        for pindex in range(len(LWP)):
-            point = get_distance(start_point,LWP[pindex])
-            if point<mini:
-                mini = point
-                LWPindex = i
-                Pindex = pindex
-    return LWPindex,Pindex
-
+        tuple shift: (сдвиг по x, сдвиг по y)'''
+    minx, miny = None, None
+    for lwp in lwps:
+        for dot in lwp:
+            print(dot[0])
+            if minx and miny:
+                if dot[0] < minx:
+                    minx = dot[0]
+                if dot[1] < miny:
+                    miny = dot[1]
+            else:
+                minx, miny = dot[0], dot[1]
+    shift = (abs(minx), abs(miny))
+    return shift
 
 
 """1. Открываем файл"""
@@ -138,9 +141,13 @@ read_dxf(msp)
 figs = [figure(i) for i in msp]
 
 
-for f in figs[0:2]:
+for f in figs:
     f.drawFigurePlt()
     f.drawCenter()
+
+
+lwps = [i.LWP for i in figs]
+shift = find_shift(lwps)
 
 
 p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)

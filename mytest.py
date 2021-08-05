@@ -101,10 +101,8 @@ def make_connections(layer):
     connections  = sorted(connections,key = lambda connections:connections[2])
     return connections
 
-<<<<<<< HEAD
-def find_entry_point(start_point,layer):
-    """находит точку, ближайшую к стартовой
-=======
+
+    
 def rate(lwp):
     """Находит стартовую точку"""
     minx = None
@@ -115,8 +113,9 @@ def rate(lwp):
         else:
             minx = dot[0]
     return minx
->>>>>>> f9926e9582b63b119b15da95844744e31a6c9bae
 
+def find_entry_point(start_point,layer):
+    """
     Args:
         start_point (tuple): стартовая точка(x,y)
         layer (msp): слой со всеми фигурами
@@ -137,7 +136,69 @@ def rate(lwp):
                 Pindex = pindex
     return LWPindex,Pindex
 
+def find_shift(lwps):
+    '''Находит сдвиг для переноса всех объектов в первую четвертьArgs: 
+        array lwps: список всех LWP
+    Returns:
+        tuple shift: (сдвиг по x, сдвиг по y)'''
+    minx, miny = None, None
+    for lwp in lwps:
+        for dot in lwp:
+            #print(dot[0])
+            if minx and miny:
+                if dot[0] < minx:
+                    minx = dot[0]
+                if dot[1] < miny:
+                    miny = dot[1]
+            else:
+                minx, miny = dot[0], dot[1]
+    shift = (abs(minx), abs(miny))
+    return shift
 
+def bridge_len(i1,i2,figs):
+    """Находит индексы ближайщи точек в двух полилиниях
+
+    Args:
+        int (i1): фигура 1
+        int (i2): фигура 2
+        list: figs
+
+    Returns:
+        lwp: линия
+    """
+    p1,p2 = bridge_points(figs[i1].LWP,figs[i2].LWP)
+    dot1 = figs[i1].LWP[p1]
+    dot2 = figs[i2].LWP[p2]
+    s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
+    return s
+
+def id_order(figs):
+    """Проверяет и находит точки, ближайшие к центру
+    Args:
+        figs: figs
+        
+
+    Returns:
+        list: [x,y,id-фигуры]
+    """
+    s=[]
+    for i1 in range(len(figs)):#for i1 in len(figs):
+        xy=[]
+        for i2 in range(len(figs[i1].LWP)):
+            dot = figs[i1].LWP[i2]
+            x,y=dot[0],dot[1]
+            xy.append([x,y])
+        s.append([xy[0][0],xy[0][1],i1])
+    s=sorted(s)
+    return s
+
+def id_order_build(figs,msp):
+    s=id_order(figs)  
+    for i in range(1,len(s)):
+        msp.add_lwpolyline(bridge_len(s[i-1][2],s[i][2],figs))
+        f=figure(msp[-1])
+        f.drawFigurePlt()
+           
 
 """1. Открываем файл"""
 """____________________________________________________________________"""
@@ -155,26 +216,60 @@ figs = [figure(i) for i in msp]
 for f in figs:
     f.drawFigurePlt()
     f.drawCenter()
-
-
-<<<<<<< HEAD
-p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)
-=======
+'''
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)
 print(lwps)
 lwps.sort(key=rate)
 print(lwps)
->>>>>>> f9926e9582b63b119b15da95844744e31a6c9bae
+'''
 
 
-dot1 = figs[0].LWP[p1]
-dot2 = figs[1].LWP[p2]
-s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
-msp.add_lwpolyline(s)
+
+'''тут строятся мосты'''
+"""
+msp.add_lwpolyline(bridge_len(1,3,figs))
 f=figure(msp[-1])
 f.drawFigurePlt()
 """
+
+lwps = [i.LWP for i in figs]
+our_coords=rate(lwps)
+print(our_coords)
+
+"""
+s=[]
+for i1 in range(len(figs)):#for i1 in len(figs):
+    xy=[]
+    for i2 in range(len(figs[i1].LWP)):
+        dot = figs[i1].LWP[i2]
+        x,y=dot[0],dot[1]
+        xy.append([x,y])
+    s.append([xy[0][0],xy[0][1],i1])
+s=sorted(s)
+
+print(s,'wowoowowo')
+
+""" 
+"""  
+s=id_order(figs)  
+for i in range(1,len(s)):
+    msp.add_lwpolyline(bridge_len(s[i-1][2],s[i][2],figs))
+    f=figure(msp[-1])
+    f.drawFigurePlt()
+""" 
+id_order_build(figs,msp)
+
+        
+
+
+"""
+lwps = [i.LWP for i in figs]
+shift = find_shift(lwps)
+print(lwps)
+lwps.sort(key=rate)
+print(lwps)
+
 print(dot1,dot2)
 """
 plt.axis('equal')

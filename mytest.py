@@ -101,10 +101,15 @@ def make_connections(layer):
     connections  = sorted(connections,key = lambda connections:connections[2])
     return connections
 
-def find_entry_point(lwps):
-    for lwp in lwps:
-        for dot in lwp:
-            print(dot)
+def rate(lwp):
+    minx = None
+    for dot in lwp:
+        if minx:
+            if dot[0] <  minx:
+                minx = dot[0]
+        else:
+            minx = dot[0]
+    return minx
 
 
 def find_shift(lwps):
@@ -148,6 +153,9 @@ for f in figs:
 
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)
+print(lwps)
+lwps.sort(key=rate)
+print(lwps)
 
 
 p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)

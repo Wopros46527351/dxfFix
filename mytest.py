@@ -4,17 +4,34 @@ from figure import figure
 import matplotlib.pyplot as plt
 from utility import get_distance,intersect
 
+""" Все наши функции"""
+"""____________________________________________________________________"""
+def open_file():
+    """Открываем файл
 
-try:
-    doc = ezdxf.readfile("111.dxf")
-except IOError:
-    print(f'Not a DXF file or a generic I/O error.')
-    sys.exit(1)
-except ezdxf.DXFStructureError:
-    print(f'Invalid or corrupted DXF file.')
-    sys.exit(2)
+    Returns:
+        [type]: [description]
+    """
+    try:
+        doc = ezdxf.readfile("111.dxf")
+    except IOError:
+        print(f'Not a DXF file or a generic I/O error.')
+        sys.exit(1)
+    except ezdxf.DXFStructureError:
+        print(f'Invalid or corrupted DXF file.')
+        sys.exit(2)
+    return doc
 
 def bridge_points(LWP1,LWP2):
+    """Находит индексы ближайщи точек в двух полилиниях
+
+    Args:
+        LWP1 (lwp): линия1
+        LWP2 (lwp): линия2
+
+    Returns:
+        tuple: (индекс точки в первой линии,индекс точки во второй линии)
+    """
     links = []
     for i1,v1 in enumerate(LWP1):
         for i2,v2 in enumerate(LWP2):
@@ -51,7 +68,16 @@ def bridge_points(LWP1,LWP2):
             return link[:2:]
     print("fail")
     return (0,0)
+
 def make_connections(layer):
+    """создаёт связи между всеми фигурами
+
+    Args:
+        layer (msp): слой
+
+    Returns:
+        array list: все связи
+    """
     connections = list()
     for i1 in range(len(layer)):
         for i2 in range(i1+1,len(layer)):
@@ -60,7 +86,17 @@ def make_connections(layer):
             connections.append((i1,i2,distance))
     connections  = sorted(connections,key = lambda connections:connections[2])
     return connections
+
 def find_entry_point(start_point,layer):
+    """находит точку, ближайшую к стартовой
+
+    Args:
+        start_point (tuple): стартовая точка(x,y)
+        layer (msp): слой со всеми фигурами
+
+    Returns:
+        tuple: индекс фигуры, индекс точки фигуры
+    """
     mini = get_distance(start_point,layer[0][0])
     LWPindex = 0
     Pindex = 0
@@ -74,10 +110,17 @@ def find_entry_point(start_point,layer):
                 Pindex = pindex
     return LWPindex,Pindex
 
+
+
+"""1. Открываем файл"""
+"""____________________________________________________________________"""
+doc=open_file()
 msp = doc.modelspace()
-print(len(msp))
+print('Количество деталей в файле - ', len(msp))
+"""
 for e in msp:
     print(e.dxftype())
+"""
 figs = [figure(i) for i in msp]
 for f in figs[0:2]:
     f.drawFigurePlt()
@@ -89,7 +132,9 @@ s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
 msp.add_lwpolyline(s)
 f=figure(msp[-1])
 f.drawFigurePlt()
+"""
 print(dot1,dot2)
+"""
 plt.axis('equal')
 plt.show()
 plt.clf()

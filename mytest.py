@@ -102,6 +102,7 @@ def make_connections(layer):
     return connections
 
 def rate(lwp):
+    """Находит стартовую точку"""
     minx = None
     for dot in lwp:
         if minx:

@@ -22,6 +22,20 @@ def open_file():
         sys.exit(2)
     return doc
 
+
+def read_dxf(msp):
+    print('Количество деталей в файле - ', len(msp))
+    figures = {}
+    for e in msp:
+        if e.dxftype() in figures.keys():
+            figures[e.dxftype()] += 1
+        else:
+            figures[e.dxftype()] = 0
+    for i in figures.keys():
+        print(i, figures[i])
+    return None
+
+
 def bridge_points(LWP1,LWP2):
     """Находит индексы ближайщи точек в двух полилиниях
 
@@ -118,15 +132,7 @@ doc=open_file()
 
 
 msp = doc.modelspace()
-print('Количество деталей в файле - ', len(msp))
-figures = {}
-for e in msp:
-    if e.dxftype() in figures.keys():
-        figures[e.dxftype()] += 1
-    else:
-        figures[e.dxftype()] = 0
-for i in figures.keys():
-    print(i, figures[i])
+read_dxf(msp)
     
 
 figs = [figure(i) for i in msp]

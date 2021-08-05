@@ -262,11 +262,9 @@ print(lwps)
 
 
 
-<<<<<<< Updated upstream
 '''тут строятся мосты'''
 """
 msp.add_lwpolyline(bridge_len(1,3,figs))
-=======
 p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)
 s1=top_points(figs[0].LWP)
 print(s1,'top_points')
@@ -274,7 +272,6 @@ dot1 = figs[0].LWP[p1]
 dot2 = figs[1].LWP[p2]
 s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
 msp.add_lwpolyline(s)
->>>>>>> Stashed changes
 f=figure(msp[-1])
 f.drawFigurePlt()
 """

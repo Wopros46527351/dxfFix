@@ -106,6 +106,7 @@ def find_entry_point(start_point,layer):
     """находит точку, ближайшую к стартовой
 =======
 def rate(lwp):
+    """Находит стартовую точку"""
     minx = None
     for dot in lwp:
         if minx:

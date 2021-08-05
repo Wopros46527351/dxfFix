@@ -115,16 +115,21 @@ def find_entry_point(start_point,layer):
 """1. Открываем файл"""
 """____________________________________________________________________"""
 doc=open_file()
+
+
 msp = doc.modelspace()
 print('Количество деталей в файле - ', len(msp))
-"""
-for e in msp:
-    print(e.dxftype())
-"""
+'''for e in msp:'''
+    
+
 figs = [figure(i) for i in msp]
+
+
 for f in figs[0:2]:
     f.drawFigurePlt()
     f.drawCenter()
+
+
 p1,p2 = bridge_points(figs[0].LWP,figs[1].LWP)
 dot1 = figs[0].LWP[p1]
 dot2 = figs[1].LWP[p2]

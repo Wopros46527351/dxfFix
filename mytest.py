@@ -19,7 +19,6 @@ read_dxf(msp)
 figs = [figure(i) for i in msp]
 figs = sorted(figs,key = sort_min_x)
 
-
 for i,f in enumerate(figs):
     f.id = i
     f.drawFigurePlt()

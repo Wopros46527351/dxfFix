@@ -1,5 +1,6 @@
+from typing import AsyncIterable
 import matplotlib.pyplot as plt
-from utility import intersect
+from utility import get_distance, intersect
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
 
@@ -101,5 +102,29 @@ class figure(object):
         for line in borders:
             if intersect(line[0],line[1],p1,p2):
                 return True
+        return False     
+
+    def full_intersection(self,p3,p4):
+        for i in range(len(self.LWP)-2):
+            p1 = self.LWP[i]
+            p2 = self.LWP[i+1]
+            if intersect(p1,p2,p3,p4):
+                return True
         return False
-    
+
+    def way(self,p1, p2):
+        mas = [self.LWP[i] for i in range(len(self.LWP)-2)]
+        ind1 = [i for i in mas if p1==mas[i]]
+        ind2 = [i for i in mas if p2==mas[i]]
+        if ind1<ind2:
+            way1 = mas[ind1:ind2]
+            way2 = mas[0:ind1] + mas[ind2:-1]
+        else:
+            way1 = mas[ind2:ind1]
+            way2 = mas[0:ind2] + mas[ind1:-1]
+        l_way1 = [get_distance(way1[i],way1[i+1]) for i in range(len(way1)-2)]
+        l_way2 = [get_distance(way2[i],way2[i+1]) for i in range(len(way2)-2)]
+        way2 = way2.reverse()
+        return way1, way2, l_way1, l_way2
+       
+        

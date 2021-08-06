@@ -195,13 +195,85 @@ def id_order(figs):
         s.append([xy[0][0],xy[0][1],i1])
     s=sorted(s)
     return s
-
+'''
 def id_order_build(figs,msp):
     #s=id_order(figs)
     for i in range(1,len(figs)):
-        msp.add_lwpolyline(bridge_len(i-1,i,figs))
-        f=figure(msp[-1])
-        f.drawFigurePlt()
+        p1,p2 = bridge_points(figs[i-1].LWP,figs[i].LWP)
+        dot1 = figs[i-1].LWP[p1]
+        dot2 = figs[i].LWP[p2]
+        obstacle = None
+        for index,f in enumerate(figs):
+            if not (index == i or index == i-1):
+                if f.full_intersection(dot1,dot2):
+                    obstacle = index
+                    break
+        
+        if not obstacle:
+            msp.add_lwpolyline(bridge_len(i-1,i,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+        else:
+            msp.add_lwpolyline(bridge_len(i-1,obstacle,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+            msp.add_lwpolyline(bridge_len(obstacle,i,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+'''
+def id_order_build(figs,msp):
+    s=[int(i) for i in range(len(figs[:5]))]
+    s_ind=1
+    now=s[0]
+    stack=None
+    nextt=s[1]
+    while s_ind!=len(s)-1:
+        stack=check(now,nextt,figs)
+        if stack:
+            msp.add_lwpolyline(bridge_len(now,stack,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+            now = stack
+            stack=None
+        else:
+            msp.add_lwpolyline(bridge_len(now,nextt,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+            now=nextt
+            s_ind+=1
+            nextt=s[s_ind]
+
+    while s_ind!=0:
+        stack=check(now,nextt,figs)
+        if stack!=None:
+            msp.add_lwpolyline(bridge_len(now,stack,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+            now = stack
+            stack=None
+        else:
+            msp.add_lwpolyline(bridge_len(now,nextt,figs))
+            f=figure(msp[-1])
+            f.drawFigurePlt()
+            s_ind=0
+            break
+                
+    
+
+def check(now,nextt,figs):  
+    p1,p2 = bridge_points(figs[now].LWP,figs[nextt].LWP)
+    dot1 = figs[now].LWP[p1]
+    dot2 = figs[nextt].LWP[p2]
+    for index,f in enumerate(figs[:4]):
+        if not (index == now or index == next):
+            if f.full_intersection(dot1,dot2):
+                return index
+                print("*************")
+                break
+    else:
+        return None
+        
+
 
 def sort_min_x(fig):
     return fig.x0

@@ -25,7 +25,7 @@ for i,f in enumerate(figs):
     f.drawFigurePlt()
     f.drawId()
     f.drawCenter()
-    f.bounding_box()
+    #f.bounding_box()
 '''
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)

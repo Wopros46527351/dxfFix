@@ -95,5 +95,6 @@ class figure(object):
         for line in borders:
             if intersect(line[0],line[1],p1,p2):
                 return True
-            else:
-                return False     
+        else:
+            return False
+    

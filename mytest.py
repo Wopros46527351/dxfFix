@@ -13,11 +13,16 @@ doc=open_file(file_name="111.dxf")
 """2. Считываем все объекты и выводим информацию"""
 """____________________________________________________________________"""
 msp = doc.modelspace()
-read_dxf(msp)
+#read_dxf(msp)
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)
+figs = sorted(figs,key = sort_min_x)[:4:]
+f = figs[0]
+
+
+big_f = figure(stack_solve(figs))
+big_f.drawFigure()
 
 for i,f in enumerate(figs):
     f.id = i
@@ -25,6 +30,7 @@ for i,f in enumerate(figs):
     f.drawId()
     f.drawCenter()
     #f.bounding_box()
+
 '''
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)
@@ -47,13 +53,13 @@ s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
 msp.add_lwpolyline(s)
 f=figure(msp[-1])
 f.drawFigurePlt()
-"""
+
 
 lwps = [i.LWP for i in figs]
 our_coords=rate(lwps)
 print(our_coords)
 
-"""
+
 s=[]
 for i1 in range(len(figs)):#for i1 in len(figs):
     xy=[]

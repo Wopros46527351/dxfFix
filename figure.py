@@ -58,7 +58,7 @@ class figure(object):
         x1 = None
         y0 = None
         y1 = None
-        print(self.point_list)
+        #print(self.point_list)
         for x,y,_,_,_ in self.point_list:
             if x0:
                 if x<x0:
@@ -113,18 +113,19 @@ class figure(object):
         return False
 
     def way(self,p1, p2):
-        mas = [self.LWP[i] for i in range(len(self.LWP)-2)]
-        ind1 = [i for i in mas if p1==mas[i]]
-        ind2 = [i for i in mas if p2==mas[i]]
-        if ind1<ind2:
-            way1 = mas[ind1:ind2]
-            way2 = mas[0:ind1] + mas[ind2:-1]
+        if p1 < p2:
+            way1 = self.point_list[p1:p2+1:]
+            way2 = self.point_list[p2::]+self.point_list[:p1+1:]
+            #way2.reverse()
         else:
-            way1 = mas[ind2:ind1]
-            way2 = mas[0:ind2] + mas[ind1:-1]
-        l_way1 = [get_distance(way1[i],way1[i+1]) for i in range(len(way1)-2)]
-        l_way2 = [get_distance(way2[i],way2[i+1]) for i in range(len(way2)-2)]
-        way2 = way2.reverse()
-        return way1, way2, l_way1, l_way2
+            way1 = self.point_list[p2:p1+1:]
+            way2 = self.point_list[p1::]+self.point_list[:p2+1:]
+            #way2.reverse()
+        l_way1 = sum([get_distance(way1[i],way1[i+1]) for i in range(len(way1)-2)])
+        l_way2 = sum([get_distance(way2[i],way2[i+1]) for i in range(len(way2)-2)])
+        if l_way1<l_way2:
+            return way1
+        else:
+            return way2
        
         

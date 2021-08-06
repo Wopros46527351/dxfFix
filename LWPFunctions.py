@@ -277,3 +277,46 @@ def check(now,nextt,figs):
 
 def sort_min_x(fig):
     return fig.x0
+
+
+def stack_solve(figs):
+    stack = figs
+    current = None
+    big_line = []
+    pIndex = 0
+    flag = False
+    while stack:
+        if current == None:
+            current = stack.pop()
+            big_line.extend(current.point_list)
+            print(f"ended {current.point_list[-1]}")
+        else:
+            target = stack.pop()
+            p1,p2 = bridge_points(current.LWP,target.LWP)
+            dot1 = current.LWP[p1]
+            dot2 = target.LWP[p2]
+
+            for f in figs:
+                if not (f == current or f == target):
+                    if f.full_intersection(dot1,dot2):
+                        stack.append(target)
+                        stack.append(f)
+                        flag = True
+                        break
+            if flag:
+                flag = False
+                continue
+            else:
+                way = current.way(pIndex,p1)
+                print(f"started {way[0]} ended {way[-1]}")
+                big_line.extend(way)
+                big_line.append(dot2)
+                print(f"ended {dot2}")
+                way= target.way(p2,0)
+                print(f"started {way[0]} ended {way[-1]}")
+                big_line.extend(way)
+                big_line.extend(target.point_list)
+                pIndex=0
+                current = target
+    return big_line
+        

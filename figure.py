@@ -103,3 +103,11 @@ class figure(object):
                 return True
             else:
                 return False     
+
+    def full_intersection(self,p3,p4):
+        for i in range(len(self.LWP)-2):
+            p1 = self.LWP[i]
+            p2 = self.LWP[i+1]
+            if intersect(p1,p2,p3,p4):
+                return True
+        return False

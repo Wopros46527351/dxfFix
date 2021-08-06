@@ -5,6 +5,7 @@ class figure(object):
 
     def __init__(self,LWP,id = -1):
         self.LWP = LWP
+        self.point_list = self.LWP_to_List()
         self.id = id
         self.x0,self.x1,self.y0,self.y1 = self.calculate_bounding_box()
         self.center = self.calculateMid()
@@ -55,8 +56,9 @@ class figure(object):
         x1 = None
         y0 = None
         y1 = None
-        for x,y,_ in self.LWP:
-            if x0 and x1:
+        print(self.point_list)
+        for x,y,_,_,_ in self.point_list:
+            if x0:
                 if x<x0:
                     x0=x
                 elif x>x1:
@@ -77,5 +79,15 @@ class figure(object):
             
         return x0,x1,y0,y1
     
-    
+    def LWP_to_List(self):
+        point_list = []
+        for i in self.LWP:
+            point_list.append(i)
+        return point_list
 
+    def bounding_box(self):
+        s=[(self.x0,self.y0),(self.x1,self.y0),(self.x1,self.y1),(self.x0,self.y1),(self.x0,self.y0)]
+        for i in range(len(s)-1):
+            plt.plot([s[i][0],s[i+1][0]],[s[i][1],s[i+1][1]],'yo-', markersize=1)
+
+        

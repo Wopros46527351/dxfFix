@@ -56,11 +56,24 @@ class figure(object):
         y0 = None
         y1 = None
         for x,y,_ in self.LWP:
-            if x0:
+            if x0 and x1:
                 if x<x0:
                     x0=x
+                elif x>x1:
+                    x1=x
             else:
-                x0=x
+                x0,x1=x,x
+
+            if y0 and y1:
+                if y<y0:
+                    y0=y
+                if y>y1:
+                    y1=y
+            else:
+                y0,y1=y,y
+                
+            
+                
             
         return x0,x1,y0,y1
     

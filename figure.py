@@ -62,23 +62,22 @@ class figure(object):
             if x0:
                 if x<x0:
                     x0=x
-            else:
-                x0=x
-            if x1:
-                if x>x1:
+                elif x>x1:
                     x1=x
             else:
-                x1=x
-            if y0:
+                x0,x1=x,x
+
+            if y0 and y1:
                 if y<y0:
                     y0=y
-            else:
-                y0=y
-            if y1:
                 if y>y1:
                     y1=y
             else:
-                y1=y
+                y0,y1=y,y
+                
+            
+                
+            
         return x0,x1,y0,y1
     
     def LWP_to_List(self):
@@ -86,6 +85,13 @@ class figure(object):
         for i in self.LWP:
             point_list.append(i)
         return point_list
+
+    def bounding_box(self):
+        s=[(self.x0,self.y0),(self.x1,self.y0),(self.x1,self.y1),(self.x0,self.y1),(self.x0,self.y0)]
+        for i in range(len(s)-1):
+            plt.plot([s[i][0],s[i+1][0]],[s[i][1],s[i+1][1]],'yo-', markersize=1)
+
+        
     def quick_intersection(self,p1,p2):
         borders = [((self.x0,self.y0),(self.x1,self.y0)),
         ((self.x1, self.y0), (self.x1, self.y1)),
@@ -95,6 +101,5 @@ class figure(object):
         for line in borders:
             if intersect(line[0],line[1],p1,p2):
                 return True
-        else:
-            return False
+        return False
     

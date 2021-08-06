@@ -197,9 +197,9 @@ def id_order(figs):
     return s
 
 def id_order_build(figs,msp):
-    s=id_order(figs)
-    for i in range(1,len(s)):
-        msp.add_lwpolyline(bridge_len(s[i-1][2],s[i][2],figs))
+    #s=id_order(figs)
+    for i in range(1,len(figs)):
+        msp.add_lwpolyline(bridge_len(i-1,i,figs))
         f=figure(msp[-1])
         f.drawFigurePlt()
 

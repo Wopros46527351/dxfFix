@@ -61,7 +61,21 @@ class figure(object):
                     x0=x
             else:
                 x0=x
-            
+            if x1:
+                if x>x1:
+                    x1=x
+            else:
+                x1=x
+            if y0:
+                if y<y0:
+                    y0=y
+            else:
+                y0=y
+            if y1:
+                if y>y1:
+                    y1=y
+            else:
+                y1=y
         return x0,x1,y0,y1
     
     

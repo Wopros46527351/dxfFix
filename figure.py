@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
-
+'''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
-    def __init__(self,LWP):
+    def __init__(self,LWP,id = -1):
         self.LWP = LWP
+        self.id = id
         self.center = self.calculateMid()
     def printFigure(self):
         for dot in self.LWP:
@@ -39,4 +40,8 @@ class figure(object):
         return (midX,midY)
 
     def drawCenter(self):
-        plt.plot(*self.center,'ro-', markersize=3)            
+        plt.plot(*self.center,'ro-', markersize=3)
+
+    def drawId(self):
+        if self.id>=0:
+            plt.text(*self.center,str(self.id))            

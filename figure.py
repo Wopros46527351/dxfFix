@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from utility import intersect
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
 
@@ -91,3 +92,14 @@ class figure(object):
             plt.plot([s[i][0],s[i+1][0]],[s[i][1],s[i+1][1]],'yo-', markersize=1)
 
         
+    def quick_intersection(self,p1,p2):
+        borders = [((self.x0,self.y0),(self.x1,self.y0)),
+        ((self.x1, self.y0), (self.x1, self.y1)),
+        ((self.x1, self.y1), (self.x0, self.y1)),
+        ((self.x0, self.y1), (self.x0, self.y0))
+        ]
+        for line in borders:
+            if intersect(line[0],line[1],p1,p2):
+                return True
+            else:
+                return False     

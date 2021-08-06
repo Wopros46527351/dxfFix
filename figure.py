@@ -6,6 +6,7 @@ class figure(object):
     def __init__(self,LWP,id = -1):
         self.LWP = LWP
         self.id = id
+        self.x0,self.x1,self.y0,self.y1 = self.calculate_bounding_box()
         self.center = self.calculateMid()
 
     def printFigure(self):
@@ -48,6 +49,20 @@ class figure(object):
     def drawId(self):
         if self.id>=0:
             plt.text(*self.center,str(self.id))
+    
+    def calculate_bounding_box(self):
+        x0 = None
+        x1 = None
+        y0 = None
+        y1 = None
+        for x,y,_ in self.LWP:
+            if x0:
+                if x<x0:
+                    x0=x
+            else:
+                x0=x
+            
+        return x0,x1,y0,y1
     
     
 

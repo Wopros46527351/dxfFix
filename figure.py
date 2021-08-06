@@ -1,10 +1,13 @@
 import matplotlib.pyplot as plt
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
+
+
     def __init__(self,LWP,id = -1):
         self.LWP = LWP
         self.id = id
         self.center = self.calculateMid()
+
     def printFigure(self):
         for dot in self.LWP:
             print(dot)
@@ -44,4 +47,7 @@ class figure(object):
 
     def drawId(self):
         if self.id>=0:
-            plt.text(*self.center,str(self.id))            
+            plt.text(*self.center,str(self.id))
+    
+    
+

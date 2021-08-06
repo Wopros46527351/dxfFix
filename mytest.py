@@ -2,7 +2,6 @@ import sys
 import ezdxf
 from figure import figure
 import matplotlib.pyplot as plt
-
 from Generics import *
 from LWPFunctions import *
 #Верните функции туда где они были и просто импортируйте их!           
@@ -18,10 +17,13 @@ read_dxf(msp)
     
 
 figs = [figure(i) for i in msp]
+figs = sorted(figs,key = sort_min_x)
 
 
-for f in figs:
+for i,f in enumerate(figs):
+    f.id = i
     f.drawFigurePlt()
+    f.drawId()
     f.drawCenter()
 '''
 lwps = [i.LWP for i in figs]

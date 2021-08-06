@@ -202,3 +202,6 @@ def id_order_build(figs,msp):
         msp.add_lwpolyline(bridge_len(s[i-1][2],s[i][2],figs))
         f=figure(msp[-1])
         f.drawFigurePlt()
+
+def sort_min_x(fig):
+    return fig.x0

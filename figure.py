@@ -116,11 +116,11 @@ class figure(object):
         if p1 < p2:
             way1 = self.point_list[p1:p2+1:]
             way2 = self.point_list[p2::]+self.point_list[:p1+1:]
-            #way2.reverse()
+            way2.reverse()
         else:
             way1 = self.point_list[p2:p1+1:]
             way2 = self.point_list[p1::]+self.point_list[:p2+1:]
-            #way2.reverse()
+            way1.reverse()
         l_way1 = sum([get_distance(way1[i],way1[i+1]) for i in range(len(way1)-2)])
         l_way2 = sum([get_distance(way2[i],way2[i+1]) for i in range(len(way2)-2)])
         if l_way1<l_way2:

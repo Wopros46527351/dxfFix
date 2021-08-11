@@ -6,54 +6,77 @@ class figure(object):
 
 
     def __init__(self,LWP,id = -1):
-        self.LWP = LWP
-        self.point_list = self.LWP_to_List()
-        self.id = id
-        self.x0,self.x1,self.y0,self.y1 = self.calculate_bounding_box()
-        self.center = self.calculateMid()
+        """Генеририрует фигуру по полилинии
+
+        Args:
+            LWP (LWPolyline): Изначальная полилиния
+            id (int, optional): Порядок при построении. Defaults to -1.
+        """
+        self.LWP = LWP #Полилиния!
+        self.point_list = [e for e in self.LWP]#Лист точек для внутреннего пользования
+        self.id = id #
+        self.x0,self.x1,self.y0,self.y1 = self.calculate_bounding_box()#
+        self.center = self.calculateMid()#
 
     def printFigure(self):
+        """Выводит все точки в ЛВП
+        """
         for dot in self.LWP:
             print(dot)
     
     def drawFigure(self):
+        """Рисует фигуру в собственном окошке, синим цветом прямые,красным - кривые"""
         L = self.LWP
         for i in range(len(L)-1):
-            if L[i][4]!=0:
+            if len(L[i]) == 5 and L[i][-1]!=0:
                 plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'ro-')
             else:
                 plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'bo-')
-        #for p in self.LWP:
-        #    plt.plot(p[0],p[1],'ro-')
         plt.axis('equal')
         plt.show()
+        plt.clf()
         
     def drawFigurePlt(self):
+        """Рисует не открывая отдельного окна, что бы отобразить нарисуйте весь график
+        """
         L = self.LWP
         for i in range(len(L)-1):
-            if L[i][4]!=0:
-                plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'ro-', markersize=2)
+            if len(L[i]) == 5 and L[i][-1]!=0:
+                plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'ro-')
             else:
-                plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'bo-', markersize=2)
+                plt.plot([L[i][0],L[i+1][0]],[L[i][1],L[i+1][1]],'bo-')
 
     def calculateMid(self):
+        """Вычисляет центр фигуры
+
+        Returns:
+            tuple: Координаты точки x y
+        """
         l = len(self.LWP)-1
-        ''
-        summX=[p[0] for p in self.LWP]
-        summY=[p[1] for p in self.LWP]
-        ''
-        midX = sum(summX[1:])/l
-        midY = sum(summY[1:])/l
-        return (midX,midY)
+        sumX = 0
+        sumY = 0
+        for d in self.point_list[1::]:
+            sumX+=d[0]
+            sumY+=d[1]
+        return (sumX/l,sumY/l)
 
     def drawCenter(self):
+        """Отрисовывает центр,окно не открывает
+        """
         plt.plot(*self.center,'ro-', markersize=3)
 
     def drawId(self):
+        """Если айди есть - напишет в центре
+        """
         if self.id>=0:
             plt.text(*self.center,str(self.id))
     
     def calculate_bounding_box(self):
+        """Находит крайние значения фигуры
+
+        Returns:
+            tuple: Наименьший/наибольший x потом у
+        """
         x0 = None
         x1 = None
         y0 = None
@@ -75,25 +98,26 @@ class figure(object):
                     y1=y
             else:
                 y0,y1=y,y
-                
-            
-                
-            
         return x0,x1,y0,y1
-    
-    def LWP_to_List(self):
-        point_list = []
-        for i in self.LWP:
-            point_list.append(i)
-        return point_list
 
     def bounding_box(self):
+        """Рисует коробку, без окна
+        """
         s=[(self.x0,self.y0),(self.x1,self.y0),(self.x1,self.y1),(self.x0,self.y1),(self.x0,self.y0)]
         for i in range(len(s)-1):
             plt.plot([s[i][0],s[i+1][0]],[s[i][1],s[i+1][1]],'yo-', markersize=1)
 
         
     def quick_intersection(self,p1,p2):
+        """Находит пересечение с коробкой
+
+        Args:
+            p1 (vertex): Начальная точка отрезка
+            p2 (vertex): Конечная точка
+
+        Returns:
+            bool: True если есть пересечение
+        """
         borders = [((self.x0,self.y0),(self.x1,self.y0)),
         ((self.x1, self.y0), (self.x1, self.y1)),
         ((self.x1, self.y1), (self.x0, self.y1)),
@@ -105,6 +129,15 @@ class figure(object):
         return False     
 
     def full_intersection(self,p3,p4):
+        """Находит пересечения со всеми отрезками фигуры,долго
+
+        Args:
+            p3 (vertex): Начальный отрезок
+            p4 (vertex ): Конечный отрезок
+
+        Returns:
+            bool: True если пересекает фигуру
+        """
         for i in range(len(self.LWP)-2):
             p1 = self.LWP[i]
             p2 = self.LWP[i+1]
@@ -113,6 +146,15 @@ class figure(object):
         return False
 
     def way(self,p1, p2):
+        """Находит кратчайший маршрут от одной точки до другой по фигуре
+
+        Args:
+            p1 (int): Индекс начала
+            p2 (int): Индекс конца
+
+        Returns:
+            list: Список точек
+        """
         if p1 < p2:
             way1 = self.point_list[p1:p2+1:]
             way2 = self.point_list[p2::]+self.point_list[:p1+1:]
@@ -130,18 +172,35 @@ class figure(object):
 
     
     def merge_double_points(self,distance):
-        L = self.LWP
+        """Убирает точки которые ближе к соседним чем заданная дистанция
+
+        Args:
+            distance (float): мнимальное растояние между точками
+        """
+        L = self.point_list
         while True:
-            for i in range(len(self.LWP)-2):
-                if get_distance(self.LWP[i],self.LWP[i+1])<=distance:
-                    self.LWP = self.LWP[:i:]+self.LWP[i+1::]
+            for i in range(len(L)-2):
+                if get_distance(L[i],L[i+1])<=distance:
+                    L = L[:i:]+L[i+1::]
                     break
             else:
                 break
+        
+        
+    def draw_from_point(self,index):
+        """Определяет маршрут по кривой начиная с заданой точки
 
+        Args:
+            index (int): Индекс начальной точки
+        """
+        L = self.point_list
+        if index:
+            return L[index::]+L[:index:]
+        else:
+            return L
                 
     def draw_figure_tochka(self,ind):
-        L = self.LWP
+        L = self.point_list
         j=ind%len(L)
         nn=len(L)-1
         
@@ -160,11 +219,11 @@ class figure(object):
             plt.plot([L[j-1][0],L[j][0]],[L[j-1][1],L[j][1]],'bo-', markersize=2)
     
 
-    def normalize_lwp(self, LWP):
-        for i in range(len(LWP)):
-            if len(LWP[i]) < 5:
-                LWP[i] = (LWP[i][0], LWP[i][1], 0, 0, 0)
-        return LWP
+    def normalize_lwp(self):
+        L = self.point_list
+        for i in range(len(L)):
+            if len(L[i]) < 5:
+                L[i] = (L[i][0], L[i][1], 0, 0, 0)
 
 
     def make_arcs(self):

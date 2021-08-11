@@ -23,14 +23,14 @@ f = figs[0]
 
 big_f = figure(stack_solve(figs))
 big_f.drawFigure()
-
+'''
 for i,f in enumerate(figs):
     f.id = i
     f.drawFigurePlt()
     f.drawId()
     f.drawCenter()
     #f.bounding_box()
-
+'''
 '''
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)
@@ -80,7 +80,7 @@ for i in range(1,len(s)):
     f=figure(msp[-1])
     f.drawFigurePlt()
 """ 
-id_order_build(figs,msp)
+#id_order_build(figs,msp)
 
         
 
@@ -94,9 +94,9 @@ print(lwps)
 
 print(dot1,dot2)
 """
-plt.axis('equal')
-plt.show()
-plt.clf()
+#plt.axis('equal')
+#plt.show()
+#plt.clf()
 
 
 """4. Рисуем все через матплотлиб (нельзя ли его встроить в окно ткинтера?)"""

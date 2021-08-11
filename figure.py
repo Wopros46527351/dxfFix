@@ -127,5 +127,32 @@ class figure(object):
             return way1
         else:
             return way2
-       
+
+    def draw_figure_tochka(self,ind):
+        L = self.LWP
+        j=ind
+        nn=len(L)-1
+        
+        for i in range(nn):
+            kk=(i+j)%nn
+            if L[kk][4]!=0:
+                plt.plot([L[kk][0],L[kk+1][0]],[L[kk][1],L[kk+1][1]],'ro-', markersize=2)
+            else:
+                plt.plot([L[kk][0],L[kk+1][0]],[L[kk][1],L[kk+1][1]],'bo-', markersize=2)
+        
+        if j==0:
+            plt.plot([L[nn][0],L[j][0]],[L[nn][1],L[j][1]],'bo-', markersize=2)
+        else:
+            plt.plot([L[j-1][0],L[j][0]],[L[j-1][1],L[j][1]],'bo-', markersize=2)
+
+
+
+            
+
+        
+        '''
+        if self.id>=0:
+            plt.text(*self.center,str(self.id))
+        '''
+
         

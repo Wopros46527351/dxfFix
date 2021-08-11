@@ -1,4 +1,3 @@
-from typing import AsyncIterable
 import matplotlib.pyplot as plt
 from utility import get_distance, intersect
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
@@ -128,13 +127,34 @@ class figure(object):
         else:
             return way2
 
+    
+    def merge_double_points(self,distance):
+        L = self.LWP
+        while True:
+            for i in range(len(self.LWP)-2):
+                if get_distance(self.LWP[i],self.LWP[i+1])<=distance:
+                    self.LWP = self.LWP[:i:]+self.LWP[i+1::]
+                    break
+            else:
+                break
+
+                
+
+
+
+
+
+
+
     def draw_figure_tochka(self,ind):
         L = self.LWP
-        j=ind
+        j=ind%len(L)
         nn=len(L)-1
         
         for i in range(nn):
             kk=(i+j)%nn
+            plt.text(L[kk][0],L[kk][1],f"{i}\n{kk}")
+            #plt.text(L[kk][0],L[kk+1][1],str(kk))
             if L[kk][4]!=0:
                 plt.plot([L[kk][0],L[kk+1][0]],[L[kk][1],L[kk+1][1]],'ro-', markersize=2)
             else:
@@ -150,9 +170,9 @@ class figure(object):
             
 
         
-        '''
-        if self.id>=0:
-            plt.text(*self.center,str(self.id))
-        '''
+        
+        
+        
+        
 
         

@@ -19,10 +19,13 @@ msp = doc.modelspace()
 figs = [figure(i) for i in msp]
 figs = sorted(figs,key = sort_min_x)[:4:]
 f = figs[0]
+f.merge_double_points(0.5)
+print(len(f.LWP))
+f.draw_figure_tochka(5)
+print(len(f.LWP))
 
-
-big_f = figure(stack_solve(figs))
-big_f.drawFigure()
+#big_f = figure(stack_solve(figs))
+#big_f.drawFigure()
 '''
 for i,f in enumerate(figs):
     f.id = i
@@ -95,7 +98,7 @@ print(lwps)
 print(dot1,dot2)
 """
 #plt.axis('equal')
-#plt.show()
+plt.show()
 #plt.clf()
 
 

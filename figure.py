@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from utility import get_distance, intersect
+from arc import arc
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
 
@@ -139,13 +140,6 @@ class figure(object):
                 break
 
                 
-
-
-
-
-
-
-
     def draw_figure_tochka(self,ind):
         L = self.LWP
         j=ind%len(L)
@@ -164,6 +158,30 @@ class figure(object):
             plt.plot([L[nn][0],L[j][0]],[L[nn][1],L[j][1]],'bo-', markersize=2)
         else:
             plt.plot([L[j-1][0],L[j][0]],[L[j-1][1],L[j][1]],'bo-', markersize=2)
+    
+
+    def normalize_lwp(self, LWP):
+        for i in range(len(LWP)):
+            if len(LWP[i]) < 5:
+                LWP[i] = (LWP[i][0], LWP[i][1], 0, 0, 0)
+        return LWP
+
+
+    def make_arcs(self):
+        while True:
+            for i in range(len(self.LWP)):
+                if len(self.LWP[i]) == 5 and self.LWP[i][-1] != 0:
+                    new = arc(self.LWP[i-1], self.LWP[i])
+                    self.LWP = self.LWP[:i:] + new + self.LWP[i+1::]
+                    break
+            else:
+                break
+        self.LWP = self.normalize_lwp(self.LWP)
+    
+
+    
+                
+
 
 
 

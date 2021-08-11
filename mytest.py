@@ -17,12 +17,20 @@ msp = doc.modelspace()
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)[:4:]
-f = figs[0]
-f.merge_double_points(0.5)
-print(len(f.LWP))
-f.draw_figure_tochka(5)
-print(len(f.LWP))
+figs = sorted(figs,key = sort_min_x)
+'''f = figs[0]
+f.drawFigurePlt()
+#print(len(f.LWP))'''
+
+for i in figs:
+    i.merge_double_points(0.05)
+    i.make_arcs()
+    i.merge_double_points(10)
+    i.drawFigurePlt()
+    i.drawId()
+plt.axis('equal')
+plt.show()
+plt.clf()
 
 #big_f = figure(stack_solve(figs))
 #big_f.drawFigure()

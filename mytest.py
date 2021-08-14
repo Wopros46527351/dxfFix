@@ -17,23 +17,42 @@ msp = doc.modelspace()
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)
-'''f = figs[0]
-f.drawFigurePlt()
-#print(len(f.LWP))'''
+figs = sorted(figs,key = sort_min_x)[:1:]
 
 for i in figs:
-    i.merge_double_points(0.05)
-    i.make_arcs()
-    i.merge_double_points(10)
+    i.merge_double_points(0.01,debug=True)
+    print(len(i.point_list))
+    #i.make_arcs()   
     i.drawFigurePlt()
+    
+    #i.drawId()
+plt.axis('equal')
+plt.show()
+plt.clf()
+
+for i in figs:
+    #i.merge_double_points(0.05)
+    i.find_arcs()
+    i.make_arcs()  
+    print(len(i.point_list))
+    i.drawFigurePlt()
+    
     i.drawId()
 plt.axis('equal')
 plt.show()
 plt.clf()
 
+#plt.axis('equal')
+#plt.show()
+#plt.clf()
+
+'''f = figs[0]
+f.drawFigurePlt()
+#print(len(f.LWP))'''
+
 #big_f = figure(stack_solve(figs))
 #big_f.drawFigure()
+
 '''
 for i,f in enumerate(figs):
     f.id = i
@@ -42,6 +61,7 @@ for i,f in enumerate(figs):
     f.drawCenter()
     #f.bounding_box()
 '''
+
 '''
 lwps = [i.LWP for i in figs]
 shift = find_shift(lwps)
@@ -49,8 +69,6 @@ print(lwps)
 lwps.sort(key=rate)
 print(lwps)
 '''
-
-
 
 '''тут строятся мосты'''
 """
@@ -65,11 +83,9 @@ msp.add_lwpolyline(s)
 f=figure(msp[-1])
 f.drawFigurePlt()
 
-
 lwps = [i.LWP for i in figs]
 our_coords=rate(lwps)
 print(our_coords)
-
 
 s=[]
 for i1 in range(len(figs)):#for i1 in len(figs):
@@ -84,6 +100,7 @@ s=sorted(s)
 print(s,'wowoowowo')
 
 """ 
+
 """  
 s=id_order(figs)  
 for i in range(1,len(s)):
@@ -91,10 +108,8 @@ for i in range(1,len(s)):
     f=figure(msp[-1])
     f.drawFigurePlt()
 """ 
+
 #id_order_build(figs,msp)
-
-        
-
 
 """
 lwps = [i.LWP for i in figs]
@@ -105,10 +120,6 @@ print(lwps)
 
 print(dot1,dot2)
 """
-#plt.axis('equal')
-plt.show()
-#plt.clf()
-
 
 """4. Рисуем все через матплотлиб (нельзя ли его встроить в окно ткинтера?)"""
 

@@ -50,6 +50,7 @@ def bridge_points(LWP1,LWP2):
     print("fail")
     return (0,0)
 
+
 def top_points(LWP1):
     """Находит индекс ближайшей точки в полилинии
 
@@ -106,7 +107,6 @@ def make_connections(layer):
     return connections
 
 
-    
 def rate(lwp):
     """Находит стартовую точку"""
     minx = None
@@ -117,6 +117,7 @@ def rate(lwp):
         else:
             minx = dot[0]
     return minx
+
 
 def find_entry_point(start_point,layer):
     """
@@ -140,6 +141,7 @@ def find_entry_point(start_point,layer):
                 Pindex = pindex
     return LWPindex,Pindex
 
+
 def find_shift(lwps):
     '''Находит сдвиг для переноса всех объектов в первую четвертьArgs: 
         array lwps: список всех LWP
@@ -159,6 +161,7 @@ def find_shift(lwps):
     shift = (abs(minx), abs(miny))
     return shift
 
+
 def bridge_len(i1,i2,figs):
     """Находит индексы ближайщи точек в двух полилиниях
 
@@ -175,6 +178,7 @@ def bridge_len(i1,i2,figs):
     dot2 = figs[i2].LWP[p2]
     s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
     return s
+
 
 def id_order(figs):
     """Проверяет и находит точки, ближайшие к центру
@@ -259,7 +263,6 @@ def id_order_build(figs,msp):
             break
                 
     
-
 def check(now,nextt,figs):  
     p1,p2 = bridge_points(figs[now].LWP,figs[nextt].LWP)
     dot1 = figs[now].LWP[p1]
@@ -273,7 +276,6 @@ def check(now,nextt,figs):
     else:
         return None
         
-
 
 def sort_min_x(fig):
     return fig.x0

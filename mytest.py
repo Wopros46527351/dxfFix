@@ -23,19 +23,17 @@ for i in figs:
     i.merge_double_points(0.01,debug=True)
     print(len(i.point_list))
     #i.make_arcs()   
-    i.drawFigurePlt()
-    
+    #i.drawFigurePlt()
+    i.draw_in_steps(1)
     #i.drawId()
 plt.axis('equal')
 plt.show()
 plt.clf()
 
 for i in figs:
-    #i.merge_double_points(0.05)
-    i.find_arcs()
     i.make_arcs()  
-    print(len(i.point_list))
-    i.drawFigurePlt()
+    i.draw_in_steps()
+    #i.drawFigurePlt()
     
     i.drawId()
 plt.axis('equal')

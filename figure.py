@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 from utility import get_distance, intersect
-from arc import arc
+from LWPFunctions import approximate_arc
+
 '''Фигура это клас для хранения одной ЛВП, он хранит в себе ЛВП и некоторые опциональные штуки'''
 class figure(object):
 
@@ -255,44 +256,16 @@ class figure(object):
             if len(L[i]) < 5:
                 L[i] = (L[i][0], L[i][1], 0, 0, 0)
 
-    '''
-    def make_arcs(self):
-        while True:
-            for i in range(len(self.LWP)):
-                if len(self.LWP[i]) == 5 and self.LWP[i][-1] != 0:
-                    new = arc(self.LWP[i-1], self.LWP[i])
-                    self.LWP = self.LWP[:i:] + new + self.LWP[i+1::]
-                    break
-            else:
-                break
-        #self.LWP = self.normalize_lwp(self.LWP)
-    '''
-    def make_arcs(self):
-        #print("HELOOOOOOOOOOOOOOOO")
+
+    def make_arcs(self,segments = 5):
         L = self.point_list
         arcs=self.find_arcs()
-        '''
-        while True:
-            for i in range(len(L)-1):
-                #print(L[i-1],L[i])
-                if len(L[i+1]) == 5 and L[i+1][-1] != 0:
-                    #print("YESSSSSSSSSSSSSS")
-                    new = arc(L[i], L[i+1])
-                    L[i+1]=(L[i+1][0],L[i+1][1],0,0,0)
-                    L = L[:i:] + new + L[i+1::]
-                    break
-            else:
-                break
-        '''
         new_L =[]
         for i,e in enumerate(L):
-            if i in arcs.keys():
-                
-                a = arc(*arcs[i])
-                print(a)
-                new_L.extend(a)
-            else:
-                new_L.append(e)
+            if i in arcs:
+                path = approximate_arc(*arcs[i],segments)
+                new_L.extend(path)
+            new_L.append((e[0],e[1],0,0,0))
         
 
             
@@ -307,13 +280,22 @@ class figure(object):
         L=self.point_list
         for e1,e2 in zip(L,L[1::]):
             n+=1
-            if e2[-1]!=0:
-                arcs[n]=(e1,e2)
+            if len(e2) == 5 and e2[-1]!=0:
+                arcs[n]=(e1,e2,e2[-1])
 
             
         return arcs
 
-    
+    def draw_in_steps(self,speed = 1):
+        L = self.point_list
+        for e1,e2 in zip(L,L[1::]):
+            if len(e2) == 5 and e2[-1]!=0:
+                plt.plot([e1[0],e2[0]],[e1[1],e2[1]],'ro-')
+            else:
+                plt.plot([e1[0],e2[0]],[e1[1],e2[1]],'bo-')
+            plt.axis('equal')
+            plt.draw()
+            plt.pause(1/speed)
 
     
                 

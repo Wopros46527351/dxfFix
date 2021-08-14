@@ -1,6 +1,6 @@
 from utility import get_distance,intersect
-from figure import figure
-
+from math import pi,radians,degrees, cos, sin
+import ezdxf
 
 
 def bridge_points(LWP1,LWP2):
@@ -225,42 +225,7 @@ def id_order_build(figs,msp):
             f=figure(msp[-1])
             f.drawFigurePlt()
 '''
-def id_order_build(figs,msp):
-    s=[int(i) for i in range(len(figs[:5]))]
-    s_ind=1
-    now=s[0]
-    stack=None
-    nextt=s[1]
-    while s_ind!=len(s)-1:
-        stack=check(now,nextt,figs)
-        if stack:
-            msp.add_lwpolyline(bridge_len(now,stack,figs))
-            f=figure(msp[-1])
-            f.drawFigurePlt()
-            now = stack
-            stack=None
-        else:
-            msp.add_lwpolyline(bridge_len(now,nextt,figs))
-            f=figure(msp[-1])
-            f.drawFigurePlt()
-            now=nextt
-            s_ind+=1
-            nextt=s[s_ind]
 
-    while s_ind!=0:
-        stack=check(now,nextt,figs)
-        if stack!=None:
-            msp.add_lwpolyline(bridge_len(now,stack,figs))
-            f=figure(msp[-1])
-            f.drawFigurePlt()
-            now = stack
-            stack=None
-        else:
-            msp.add_lwpolyline(bridge_len(now,nextt,figs))
-            f=figure(msp[-1])
-            f.drawFigurePlt()
-            s_ind=0
-            break
                 
     
 def check(now,nextt,figs):  
@@ -321,4 +286,41 @@ def stack_solve(figs):
                 pIndex=0
                 current = target
     return big_line
-        
+
+def getDifference(b1, b2):
+    """Выдает разницу между двумя углами
+
+    Args:
+        b1 (float): Degree one
+        b2 (float): Degree two
+
+    Returns:
+        float: diffrence
+    """
+    if b2<b1:
+        b2,b1=b1,b2
+    r = (b2 - b1) % 360.0
+	# Python modulus has same sign as divisor, which is positive here,
+	# so no need to consider negative case
+    if r >= 180.0:
+	    r -= 360.0
+    return r
+
+def approximate_arc(point_1,point_2,bulge,sectors):
+    v1 = ezdxf.math.Vec2(point_1[0],point_1[1])
+    v2 = ezdxf.math.Vec2(point_2[0],point_2[1])
+    center,start,end,radius = ezdxf.math.bulge_to_arc(v1,v2,bulge)
+    d0 = degrees(start)
+    d1 = degrees(end)
+    step = getDifference(d0,d1)/sectors
+    if d0>d1:
+        step=-step
+    x0 = center[0]
+    y0 = center[1]
+    new_path = []
+    for i in range(sectors):
+        d = radians(d0+step*i)
+        x1 = x0 + radius*cos(d) 
+        y1 = y0 + radius*sin(d)
+        new_path.append((x1,y1,0,0,0))
+    return new_path

@@ -255,6 +255,7 @@ class figure(object):
         for i in range(len(L)):
             if len(L[i]) < 5:
                 L[i] = (L[i][0], L[i][1], 0, 0, 0)
+        self.point_list = L
 
 
     def make_arcs(self,segments = 5):
@@ -264,6 +265,7 @@ class figure(object):
         for i,e in enumerate(L):
             if i in arcs:
                 path = approximate_arc(*arcs[i],segments)
+                
                 new_L.extend(path)
             new_L.append((e[0],e[1],0,0,0))
         

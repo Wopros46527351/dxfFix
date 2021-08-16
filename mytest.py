@@ -24,7 +24,7 @@ for i in figs:
     print(len(i.point_list))
     #i.make_arcs()   
     #i.drawFigurePlt()
-    i.draw_in_steps(1)
+    i.draw_in_steps(10)
     #i.drawId()
 plt.axis('equal')
 plt.show()
@@ -32,7 +32,7 @@ plt.clf()
 
 for i in figs:
     i.make_arcs()  
-    i.draw_in_steps()
+    i.draw_in_steps(10)
     #i.drawFigurePlt()
     
     i.drawId()

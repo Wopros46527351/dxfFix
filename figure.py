@@ -259,17 +259,19 @@ class figure(object):
 
 
     def make_arcs(self,segments = 5):
+        
         L = self.point_list
         arcs=self.find_arcs()
         new_L =[]
         for i,e in enumerate(L):
             if i in arcs:
                 path = approximate_arc(*arcs[i],segments)
-                
+                if get_distance(new_L[-1], path[0])>get_distance(new_L[-1], path[-1]):
+                    path.reverse()
                 new_L.extend(path)
             new_L.append((e[0],e[1],0,0,0))
         
-
+        
             
 
         self.point_list=new_L
@@ -277,6 +279,11 @@ class figure(object):
 
 
     def find_arcs(self):
+        """Находит дуги 
+
+        Returns:
+            Словарь с дугами: key- идекс точки, value - кортеж данных, модержащий начальную точку дуги, конечную точку дуги и скривление дуги 
+        """
         arcs = {}
         n=0
         L=self.point_list
@@ -289,6 +296,7 @@ class figure(object):
         return arcs
 
     def draw_in_steps(self,speed = 1):
+
         L = self.point_list
         for e1,e2 in zip(L,L[1::]):
             if len(e2) == 5 and e2[-1]!=0:

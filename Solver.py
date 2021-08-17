@@ -1,6 +1,9 @@
 from figure import figure
 from utility import get_distance,intersect
 
+def sort_min_x(fig):
+    return fig.x0
+
 def bridge_points(f1,f2):
     """Находит индексы ближайщих точек в двух полилиниях
 
@@ -80,16 +83,16 @@ def bridge_len(i1,i2,figs):
     Returns:
         lwp: линия
     """
-    p1,p2 = bridge_points(figs[i1].LWP,figs[i2].LWP)
-    dot1 = figs[i1].LWP[p1]
-    dot2 = figs[i2].LWP[p2]
+    p1,p2 = bridge_points(figs[i1].point_list,figs[i2].point_list)
+    dot1 = figs[i1].point_list[p1]
+    dot2 = figs[i2].point_list[p2]
     s=[(dot1[0],dot1[1]),(dot2[0],dot2[1])]
     return s
 
 def check(now,nextt,figs):  
-    p1,p2 = bridge_points(figs[now].LWP,figs[nextt].LWP)
-    dot1 = figs[now].LWP[p1]
-    dot2 = figs[nextt].LWP[p2]
+    p1,p2 = bridge_points(figs[now].point_list,figs[nextt].point_list)
+    dot1 = figs[now].point_list[p1]
+    dot2 = figs[nextt].point_list[p2]
     for index,f in enumerate(figs[:4]):
         if not (index == now or index == next):
             if f.full_intersection(dot1,dot2):
@@ -109,7 +112,7 @@ def stack_solve(figs):
         if current == None:
             current = stack.pop()
             big_line.extend(current.point_list)
-            print(f"ended {current.point_list[-1]}")
+            #print(f"ended {current.point_list[-1]}")
         else:
             target = stack.pop()
             p1,p2 = bridge_points(current,target)
@@ -130,12 +133,7 @@ def stack_solve(figs):
                 way = current.way(pIndex,p1)
                 print(f"started {way[0]} ended {way[-1]}")
                 big_line.extend(way)
-                big_line.append(dot2)
-                print(f"ended {dot2}")
-                way= target.way(p2,0)
-                print(f"started {way[0]} ended {way[-1]}")
-                big_line.extend(way)
-                big_line.extend(target.point_list)
-                pIndex=0
+                big_line.extend(target.draw_from_point(p2))
+                pIndex = p2
                 current = target
     return big_line

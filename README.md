@@ -1,6 +1,6 @@
 # dxfFix
  Fix dxf for production task
-
+pip install -r requirements.txt
 #План работы утилиты
 1. Открыть файл
 1. Считать все объекты

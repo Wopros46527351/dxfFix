@@ -17,12 +17,11 @@ msp = doc.modelspace()
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)
-'''
+figs = sorted(figs,key = sort_min_x)[:2:]
+
 for i in figs:
     i.merge_double_points(0.01,debug=True)
-    print(len(i.point_list))
-    #i.make_arcs()   
+    i.make_arcs()   
     #i.drawFigurePlt()
     i.draw_in_steps(10)
     #i.drawId()
@@ -44,16 +43,16 @@ plt.clf()
 #plt.show()
 #plt.clf()
 
-'''f = figs[0]
+f = figs[0]
 f.drawFigurePlt()
 #print(len(f.LWP))'''
-
+'''
 for i in figs:
     #i.merge_double_points(0.01)
     i.make_arcs() 
 big_f = figure(stack_solve(figs))
 big_f.draw_in_steps(10)
-big_f.drawFigure()
+big_f.drawFigure()'''
 
 '''
 for i,f in enumerate(figs):

@@ -264,12 +264,13 @@ class figure(object):
         arcs=self.find_arcs()
         new_L =[]
         for i,e in enumerate(L):
+            new_L.append((e[0],e[1],0,0,0))
             if i in arcs:
                 path = approximate_arc(*arcs[i],segments)
                 if get_distance(new_L[-1], path[0])>get_distance(new_L[-1], path[-1]):
                     path.reverse()
                 new_L.extend(path)
-            new_L.append((e[0],e[1],0,0,0))
+            
         
         
             
@@ -288,9 +289,9 @@ class figure(object):
         n=0
         L=self.point_list
         for e1,e2 in zip(L,L[1::]):
+            if len(e1) == 5 and e1[-1]!=0:
+                arcs[n]=(e1,e2,e1[-1])
             n+=1
-            if len(e2) == 5 and e2[-1]!=0:
-                arcs[n]=(e1,e2,e2[-1])
 
             
         return arcs
@@ -299,7 +300,7 @@ class figure(object):
 
         L = self.point_list
         for e1,e2 in zip(L,L[1::]):
-            if len(e2) == 5 and e2[-1]!=0:
+            if len(e1) == 5 and e1[-1]!=0:
                 plt.plot([e1[0],e2[0]],[e1[1],e2[1]],'ro-')
             else:
                 plt.plot([e1[0],e2[0]],[e1[1],e2[1]],'bo-')

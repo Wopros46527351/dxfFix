@@ -5,7 +5,7 @@ from math import pi,radians,degrees, cos, sin
 
 def arc(p1,p2):
     print(p1,p2)
-    b = p2[-1]
+    b = p1[-1]
     v1 = ezdxf.math.Vec2(p1[0],p1[1])
     v2 = ezdxf.math.Vec2(p2[0],p2[1])
     center,start,end,radius = ezdxf.math.bulge_to_arc(v1,v2,b)

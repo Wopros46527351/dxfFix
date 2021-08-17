@@ -46,7 +46,11 @@ plt.clf()
 f = figs[0]
 f.drawFigurePlt()
 #print(len(f.LWP))'''
+<<<<<<< Updated upstream
 '''
+=======
+#print(figs[0:1:])
+>>>>>>> Stashed changes
 for i in figs:
     #i.merge_double_points(0.01)
     i.make_arcs() 

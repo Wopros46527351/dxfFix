@@ -236,7 +236,7 @@ class figure(object):
         nn=len(L)-1
         
         for i in range(nn):
-            kk=(i+j)%nn
+            kk=(i+j+nn)%nn
             plt.text(L[kk][0],L[kk][1],f"{i}\n{kk}")
             #plt.text(L[kk][0],L[kk+1][1],str(kk))
             if L[kk][4]!=0:

@@ -155,8 +155,7 @@ def id_order_build(figs,msp):
 
         
 
-def sort_min_x(fig):
-    return fig.x0
+
 
 
 
@@ -186,12 +185,14 @@ def approximate_arc(point_1,point_2,bulge,sectors):
     center,start,end,radius = ezdxf.math.bulge_to_arc(v1,v2,bulge)
     d0 = degrees(start)
     d1 = degrees(end)
+    sectors=int(get_distance(point_1,point_2)/(sectors*10))+2
     step = getDifference(d0,d1)/sectors
     if d0>d1:
         step=-step
     x0 = center[0]
     y0 = center[1]
     new_path = []
+    
     for i in range(sectors):
         d = radians(d0+step*i)
         x1 = x0 + radius*cos(d) 

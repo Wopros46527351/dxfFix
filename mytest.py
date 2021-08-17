@@ -18,7 +18,7 @@ msp = doc.modelspace()
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)[:5:]
+figs = sorted(figs,key = sort_min_x)
 '''
 for i in figs:
     i.merge_double_points(0.01,debug=True)
@@ -52,7 +52,7 @@ f.drawFigurePlt()
 #print(figs[0:1:])
 '''
 for i in figs:
-    #i.merge_double_points(0.01)
+    i.merge_double_points(0.01)
     i.make_arcs() 
 big_f = figure(stack_solve(figs))
 big_f.draw_in_steps(10)

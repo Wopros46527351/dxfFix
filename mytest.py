@@ -4,6 +4,7 @@ from figure import figure
 import matplotlib.pyplot as plt
 from Generics import *
 from LWPFunctions import *
+from Solver import *
 #Верните функции туда где они были и просто импортируйте их!           
 
 """1. Открываем файл"""
@@ -17,8 +18,8 @@ msp = doc.modelspace()
     
 
 figs = [figure(i) for i in msp]
-figs = sorted(figs,key = sort_min_x)[:2:]
-
+figs = sorted(figs,key = sort_min_x)[:5:]
+'''
 for i in figs:
     i.merge_double_points(0.01,debug=True)
     i.make_arcs()   
@@ -39,6 +40,7 @@ plt.axis('equal')
 plt.show()
 plt.clf()
 '''
+'''
 #plt.axis('equal')
 #plt.show()
 #plt.clf()
@@ -46,17 +48,15 @@ plt.clf()
 f = figs[0]
 f.drawFigurePlt()
 #print(len(f.LWP))'''
-<<<<<<< Updated upstream
 '''
-=======
 #print(figs[0:1:])
->>>>>>> Stashed changes
+'''
 for i in figs:
     #i.merge_double_points(0.01)
     i.make_arcs() 
 big_f = figure(stack_solve(figs))
 big_f.draw_in_steps(10)
-big_f.drawFigure()'''
+big_f.drawFigure()
 
 '''
 for i,f in enumerate(figs):
